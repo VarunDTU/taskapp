@@ -7,8 +7,8 @@ export default function LatestTask() {
     .slice(0, tasks.length < 4 ? tasks.length : 4);
   const currDate = new Date();
   return (
-    <div className="h-full flex iems center flex-col text-center mt-10">
-      <div className="font-bold text-2xl">Upcoming Tasks</div>
+    <div className="h-full flex iems center flex-col text-center md:mt-10 m-10">
+      <div className="font-bold text-xl">Upcoming Tasks</div>
       <div className="">
         {latestTask.map((task, index) => {
           return (

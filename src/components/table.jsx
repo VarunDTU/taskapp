@@ -6,11 +6,12 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTasks, swapTasks, updateTasks } from "../features/slice";
 export default function Table() {
   const tasks = useSelector((state) => state.tasks);
-
+  const [filterStatus, setFilterStatus] = useState("none");
   const date = new Date();
   const dispatch = useDispatch();
   const updateStatus = (id) => {
@@ -232,13 +233,35 @@ export default function Table() {
       </tr>
     );
   };
+  var filteredTasks = tasks;
+
+  if (filterStatus == 1) {
+    filteredTasks = tasks.filter((task) => task.status == true);
+  } else if (filterStatus == 2) {
+    filteredTasks = tasks.filter((task) => task.status == false);
+  } else if (filterStatus == 3) {
+    filteredTasks = tasks.filter((task) => task.overdueDate < date);
+  } else {
+    filteredTasks = tasks;
+  }
+
   return (
     <div className="w-full">
       <div className="flex w-full justify-between p-2 px-4">
         <div className="text-xl font-bold ">Tasks</div>
       </div>
       <div className="flex items-end justify-end">
-        <span className="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700">
+        <span
+          className={`inline-flex items-center justify-center rounded-full cursor-pointer ${
+            filterStatus == 1
+              ? "bg-emerald-100 border border-transparent"
+              : "border-green-500 border"
+          } px-2.5 py-0.5 text-emerald-700`}
+          onClick={() => {
+            if (filterStatus != 1) setFilterStatus(1);
+            else setFilterStatus(0);
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -254,9 +277,19 @@ export default function Table() {
             />
           </svg>
 
-          <p className="whitespace-nowrap text-sm">Paid</p>
+          <p className="whitespace-nowrap text-sm">Completed</p>
         </span>
-        <span className="inline-flex items-center justify-center rounded-full bg-amber-100 px-2.5 py-0.5 text-amber-700">
+        <span
+          className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-amber-700 cursor-pointer ${
+            filterStatus == 2
+              ? "bg-amber-100 border border-transparent"
+              : "border-amber-700 border"
+          }`}
+          onClick={() => {
+            if (filterStatus != 2) setFilterStatus(2);
+            else setFilterStatus(0);
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -272,9 +305,19 @@ export default function Table() {
             />
           </svg>
 
-          <p className="whitespace-nowrap text-sm">Refunded</p>
+          <p className="whitespace-nowrap text-sm">Upcoming</p>
         </span>
-        <span className="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700">
+        <span
+          className={`inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-amber-700 cursor-pointer ${
+            filterStatus == 3
+              ? "bg-red-100 border border-transparent"
+              : "border-red-700 border"
+          }`}
+          onClick={() => {
+            if (filterStatus != 3) setFilterStatus(3);
+            else setFilterStatus(0);
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -290,7 +333,7 @@ export default function Table() {
             />
           </svg>
 
-          <p className="whitespace-nowrap text-sm">Failed</p>
+          <p className="whitespace-nowrap text-sm">Overdue</p>
         </span>
       </div>
       <div className="">
@@ -323,7 +366,7 @@ export default function Table() {
                   items={tasks}
                   strategy={verticalListSortingStrategy}
                 >
-                  {tasks.map((task, index) => {
+                  {filteredTasks.map((task, index) => {
                     return <SortableList key={index} task={task} />;
                   })}
                 </SortableContext>

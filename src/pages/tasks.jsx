@@ -11,7 +11,7 @@ export default function Tasks() {
       <Navbar></Navbar>
       <div className="w-full min-h-screen [&::-webkit-scrollbar]:hidden ">
         <div className="flex flex-row ">
-          <div className=" h-full">
+          <div className=" md:block hidden">
             <Sidebar></Sidebar>
           </div>
           <div className="w-full flex flex-col md:flex-row">
