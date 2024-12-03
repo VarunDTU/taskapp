@@ -4,7 +4,7 @@ const initialState = {
   tasks: [
     {
       id: 1,
-      title: "hello world1",
+      title: "First Meeting",
       status: false,
       createdAtDate: new Date("2022-03-25"),
       overdueDate: new Date("2022-04-25"),
@@ -12,7 +12,7 @@ const initialState = {
     },
     {
       id: 2,
-      title: "hello world2",
+      title: "Second Meeting",
       status: true,
       createdAtDate: new Date("2022-03-25"),
       overdueDate: new Date("2025-04-25"),
